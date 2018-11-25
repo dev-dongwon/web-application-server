@@ -28,7 +28,15 @@ public class HttpRequestUtils {
      * @return
      */
     public static Map<String, String> parseQueryString(String queryString) {
-        return parseValues(queryString, "&");
+    	if (Strings.isNullOrEmpty(queryString)) {
+    		return Maps.newHashMap();
+    	}
+    	
+    	String[] tokens = queryString.split("&");
+    	return Arrays.stream(tokens)
+    					.map(t -> getKeyValue(t, "="))
+    					.filter(p -> p != null)
+    					.collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
     }
 
     /**
