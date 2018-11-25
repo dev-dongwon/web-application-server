@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import model.User;
 import util.HttpRequestUtils;
+import util.IOUtils;
 
 public class RequestHandler extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
@@ -60,9 +61,9 @@ public class RequestHandler extends Thread {
         	log.debug("Content-length : {}", headers.get("Content-Length"));
         	
         	if (url.startsWith("/user/create")) {
-        		int index = url.indexOf("?");
-        		String queryString = url.substring(index + 1);
-        		Map<String, String> params = HttpRequestUtils.parseQueryString(queryString);
+        		String requestBody = IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));
+        		log.debug("Request Body : {}", requestBody);
+        		Map<String, String> params = HttpRequestUtils.parseQueryString(requestBody);
         		User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
         		log.debug("user : {}", user);
         		
