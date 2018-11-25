@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -46,13 +47,28 @@ public class RequestHandler extends Thread {
         	}
         	
         	String url = HttpRequestUtils.getUrl(line);
+        	Map<String, String> headers = new HashMap<String, String>();
+        	while(!"".equals(line)) {
+        		log.debug("header : {}", line);
+        		line = br.readLine();
+        		String[] headerTokens = line.split(": ");
+        		if (headerTokens.length == 2) {
+        			headers.put(headerTokens[0], headerTokens[1]);
+        		}
+        	}
+        	
+        	log.debug("Content-length : {}", headers.get("Content-Length"));
+        	
         	if (url.startsWith("/user/create")) {
         		int index = url.indexOf("?");
         		String queryString = url.substring(index + 1);
         		Map<String, String> params = HttpRequestUtils.parseQueryString(queryString);
         		User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
         		log.debug("user : {}", user);
+        		
+        		url = "/index.html";
         	}
+        	
         	
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
