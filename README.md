@@ -15,7 +15,13 @@
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
 ### 요구사항 1 - http://localhost:8080/index.html로 접속시 응답
-* 
+* try - catch 절을 InputStream, OutStream에 활용
+  * 원래 자원을 쓰면 꼭 clsoe를 통해 닫아줘야 하는 것으로 알고 있었음, BUT
+  * API를 열어보면 InputStream, OutputStream이 closeable 인터페이스를 implements 하고 있음
+  * try - catch를 이용하면 자원을 다 소모했을때 자동으로 close를 실행해줌
+* BufferedReader를 통해 request 요청 읽기
+* 클라이언트 요청은 순차적이 아닌 thread를 통해 동시다발적으로 진행
+
 
 ### 요구사항 2 - get 방식으로 회원가입
 * 
