@@ -14,7 +14,7 @@ public class HttpRequestUtils {
 	
     private static final Logger log = LoggerFactory.getLogger(HttpRequestUtils.class);
 
-	// 요청 url을 받는 부분을 유틸의 메소드로 분리(계속 재사용하기 위해)
+	// 요청 url을 받는 부분을 유틸의 메소드로 분리(계속 재사용)
 	public static String getUrl(String firstLine) {
     	String[] splited = firstLine.split(" ");
     	String path = splited[1];
